@@ -479,6 +479,12 @@ class RHA(nn.Module):
             if m.bias is not None:
                 nn.init.constant_(m.bias, 0)
 
+    def load_state_dict(self, state_dict, *args, **kwargs):
+        state_dict["to_img.MetaUpsample"] = self.to_img.MetaUpsample
+        if "unshuffle" in state_dict:
+            state_dict["unshuffle"] = self.unshuffle
+        return super().load_state_dict(state_dict, *args, **kwargs)
+
     def check_img_size(self, x, resolution: tuple[int, int]):
         scaled_size = self.pad
         mod_pad_h = (scaled_size - resolution[0] % scaled_size) % scaled_size
