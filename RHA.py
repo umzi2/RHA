@@ -357,7 +357,7 @@ class HybridAttention(nn.Module):
         super().__init__()
         self.att = nn.Sequential(
             nn.MaxPool2d(down, down),
-            OmniShift(dim // 2),
+            LinAngularAttention(dim // 2),
             nn.Upsample(scale_factor=down, mode="bilinear"),
         )
         self.conv = OmniShift(dim // 2)
